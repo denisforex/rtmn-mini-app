@@ -1,19 +1,13 @@
-# RTMN Mini App
+# RTMN Mini App / Storefront
 
-A mobile-first Telegram Mini App storefront built with React + Vite.
+Responsive RTMN storefront for Telegram Mini App and normal browsers. Includes multilingual UI (EN/DE/UA), product catalog, search, filters, sorting, wishlist, cart, checkout flow, responsive desktop/tablet/mobile layouts, Telegram WebApp initialization, and channel-post helper.
 
-## Local setup
-
-1. Install Node.js LTS.
-2. Open this folder in VS Code.
-3. Run:
+## Local
 
 ```bash
 npm install
 npm run dev
 ```
-
-4. Open the local URL shown by Vite.
 
 ## Production build
 
@@ -21,12 +15,12 @@ npm run dev
 npm run build
 ```
 
-The production files are generated in `dist/`.
+## Channel post helper
 
-## Next steps
+Keep your `.env` file locally and run:
 
-- Replace mock product visuals with real product photos.
-- Connect checkout to a backend/database.
-- Validate Telegram Mini App init data on the server.
-- Add a real payment provider.
-- Deploy the built app to an HTTPS host and use that URL in BotFather.
+```bash
+npm run post:channel
+```
+
+Do not commit `.env` or the bot token.
