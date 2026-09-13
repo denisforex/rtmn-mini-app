@@ -2,3 +2,20 @@ node_modules/
 dist/
 .env
 .env.local
+
+# Local environment files and credentials
+.env.*
+!.env.example
+.envrc
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+secrets/
+credentials/
+
+# Local-only tooling output
+coverage/
+*.log
+.DS_Store
