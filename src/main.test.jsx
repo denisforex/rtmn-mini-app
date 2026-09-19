@@ -73,6 +73,17 @@ describe("RTMN baseline", () => {
     await user.clear(search);
     await user.type(search, "nonexistent-piece");
     expect(within(container.querySelector(".search-results")).getByText("No pieces found")).toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    expect(container.querySelectorAll("#catalog article")).toHaveLength(6);
+  });
+
+  it("connects the RTMN philosophy tabs to their active statement", async () => {
+    const user = userEvent.setup();
+    mount();
+    await user.click(screen.getByRole("tab", { name: "TRUE" }));
+    const panel = document.querySelector("#philosophy-panel");
+    expect(panel).toHaveTextContent("Objects do the work.");
+    expect(panel).toHaveAttribute("aria-labelledby", "philosophy-tab-true");
   });
 
   it("sorts prices in both directions", async () => {

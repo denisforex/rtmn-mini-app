@@ -171,7 +171,7 @@ function App(){
   useEffect(()=>{const closeOnEscape=(event)=>{if(event.key!=="Escape")return;if(selected)setSelected(null);else if(filterOpen)setFilterOpen(false);else if(searchOpen)setSearchOpen(false);else if(menuOpen)setMenuOpen(false);else if(checkout)setCheckout(false)};window.addEventListener("keydown",closeOnEscape);return()=>window.removeEventListener("keydown",closeOnEscape)},[selected,filterOpen,searchOpen,menuOpen,checkout]);
 
   const catalogProducts=useMemo(()=>products.map(product=>({...product,inStock:(inventory[product.id]?.quantity??0)>0})),[inventory]);
-  const filtered=useMemo(()=>{const catalog=filterProducts(catalogProducts,{category,query,filters,sort});return collection==="new"?catalog.filter(product=>product.badge==="NEW"):catalog},[catalogProducts,category,collection,query,filters,sort]);
+  const filtered=useMemo(()=>{const catalog=filterProducts(catalogProducts,{category,filters,sort});return collection==="new"?catalog.filter(product=>product.badge==="NEW"):catalog},[catalogProducts,category,collection,filters,sort]);
   const searchResults=useMemo(()=>searchProducts(catalogProducts,query).slice(0,5),[catalogProducts,query]);
   const filterCount=activeFilterCount(filters);
   const recentProducts=useMemo(()=>recent.map((id)=>catalogProducts.find((product)=>product.id===id)).filter(Boolean),[recent,catalogProducts]);
@@ -188,6 +188,8 @@ function App(){
   },[query]);
 
   const scrollTo=(id)=>{document.getElementById(id)?.scrollIntoView({behavior:window.matchMedia?.("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});setMenuOpen(false)};
+  const openSearch=()=>{setQuery("");setSearchOpen(true)};
+  const closeSearch=()=>{setQuery("");setSearchOpen(false)};
   const setCat=(c)=>{setCollection("all");setCategory(c);trackEvent("catalog_category_selected",{category:c});setView("shop");setTimeout(()=>scrollTo("catalog"),30)};
   const setNewDrop=()=>{setCollection("new");setCategory("All");trackEvent("catalog_collection_selected",{collection:"new"});setView("shop");setTimeout(()=>scrollTo("catalog"),30)};
   const toggleFilter=(field,value)=>setFilters(current=>({...current,[field]:current[field].includes(value)?current[field].filter(item=>item!==value):[...current[field],value]}));
@@ -215,7 +217,7 @@ function App(){
         <button className={collection==="new"?"active":""} onClick={setNewDrop}>{t.nav.new}</button>
       </nav>
       <div className="header-actions">
-        <button aria-label={t.search} onClick={()=>setSearchOpen(true)}><Icon name="search"/></button>
+        <button aria-label={t.search} onClick={openSearch}><Icon name="search"/></button>
         <div className="lang-inline">{[["en","EN"],["de","DE"],["uk","UA"]].map(([k,v])=><button key={k} className={lang===k?"active":""} onClick={()=>setLang(k)}>{v}</button>)}</div>
         <button className="theme-toggle" aria-label={theme==="light"?t.themeToDark:t.themeToLight} onClick={()=>setTheme(current=>current==="light"?"dark":"light")}><Icon name={theme==="light"?"moon":"sun"}/></button>
         <button className="account-action" aria-label={t.account} onClick={()=>setView("account")}><Icon name="user"/></button>
@@ -275,7 +277,7 @@ function App(){
     <nav className="mobile-bottom-nav" aria-label={t.menu}>
       <button className={view==="shop"?"active":""} onClick={()=>{setView("shop");window.scrollTo({top:0,behavior:window.matchMedia?.("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}}><Icon name="home"/>{t.nav.home}</button>
       <button onClick={()=>setCat("All")}><Icon name="grid"/>{t.nav.shop}</button>
-      <button onClick={()=>setSearchOpen(true)}><Icon name="search"/>{t.search}</button>
+      <button onClick={openSearch}><Icon name="search"/>{t.search}</button>
       <button className={view==="wishlist"?"active":""} onClick={()=>setView("wishlist")}><span className="mobile-nav-icon"><Icon name="heart"/>{wishlist.length>0&&<b>{wishlist.length}</b>}</span>{t.wishlist}</button>
       <button className={view==="account"?"active":""} onClick={()=>setView("account")}><Icon name="user"/>{t.account}</button>
       <button className={view==="cart"?"active":""} onClick={()=>setView("cart")}><span className="mobile-nav-icon"><Icon name="bag"/>{count>0&&<b>{count}</b>}</span>{t.bag}</button>
@@ -295,7 +297,7 @@ function App(){
       onLike={() => toggleWishlist(selected.id)}
       onOpenRelated={openProduct}
     />}
-    {searchOpen && <SearchModal t={t} query={query} setQuery={setQuery} onClose={()=>setSearchOpen(false)} results={searchResults} discoveries={searchDiscoveries} onOpen={openProduct} onCategory={setCat} onCampaign={openCampaign} onStory={openJournal}/>}
+    {searchOpen && <SearchModal t={t} query={query} setQuery={setQuery} onClose={closeSearch} results={searchResults} discoveries={searchDiscoveries} onOpen={openProduct} onCategory={setCat} onCampaign={openCampaign} onStory={openJournal}/>}
     {filterOpen && <FilterDrawer t={t} category={category} setCategory={setCategory} filters={filters} toggleFilter={toggleFilter} setFilters={setFilters} onClose={()=>setFilterOpen(false)} onApply={()=>setFilterOpen(false)}/>}
   </div>
 }
@@ -311,7 +313,7 @@ function ProductCard({product,t,liked,onLike,onOpen,index}){
         <div className={`product-art ${product.tone}`}><img src={image} alt={`${product.name} — RTMN`} loading="lazy" decoding="async" width="760" height="950"/></div>
       </button>
       <span className="product-index">0{product.id}</span>
-      <button aria-label={t.wishlist} className={`heart-button ${liked?"liked":""}`} onClick={onLike}><Icon name="heart"/></button>
+      <button aria-label={t.wishlist} aria-pressed={liked} className={`heart-button ${liked?"liked":""}`} onClick={onLike}><Icon name="heart"/></button>
     </div>
     <div className="product-info"><div className="product-object-copy"><div className="product-category">OBJECT {String(product.id).padStart(3,"0")}</div><h3>{product.name}</h3><div className="product-sub">{text.color}</div><div className="product-specs"><span>{object.weight}</span><span>{object.fit}</span></div></div><div className="product-price"><span>{money(product.price)}</span>{product.compareAt&&<del>{money(product.compareAt)}</del>}</div></div>
     <div className="product-actions"><button onClick={onOpen}>{t.viewProduct}<Icon name="arrow"/></button><span>{product.inStock?sizeCount:t.soldOut}</span></div>
@@ -337,18 +339,18 @@ function ProductModal({product,t,ui,available,related,size,setSize,onClose,onAdd
     <div ref={dialogRef} className="product-modal" role="dialog" aria-modal="true" aria-label={product.name} onMouseDown={e=>e.stopPropagation()}>
       <button className="modal-close" aria-label={t.close} onClick={onClose}><Icon name="close"/></button>
       <div className="modal-gallery">
-        <div className="gallery-stage">
+        <div className="gallery-stage" id={`gallery-panel-${product.id}`} role="tabpanel" aria-labelledby={`gallery-tab-${product.id}-${gallery}`}>
           {gallery==="product"&&<img src={image} alt={`${product.name} — RTMN`}/>}
           {gallery==="fabric"&&<div className="gallery-information fabric-slide"><div><span>RTMN / MATERIAL</span><strong>{text.material}</strong><p>{text.details[0]} · {text.fit}</p></div></div>}
           {gallery==="specs"&&<div className="gallery-information spec-slide"><span>RTMN / SPEC</span><strong>{product.name}</strong><div><b>{t.material}<em>{text.material}</em></b><b>{t.fit}<em>{text.fit}</em></b><b>{t.size}<em>{product.sizes.join(" · ")}</em></b></div></div>}
         </div>
         <div className="gallery-thumb-row" role="tablist" aria-label={`${product.name} gallery`}>
-          <button className={gallery==="product"?"active":""} role="tab" aria-label={t.product} aria-selected={gallery==="product"} onClick={()=>setGallery("product")}><img src={image} alt=""/></button>
-          <button className={gallery==="fabric"?"active":""} role="tab" aria-selected={gallery==="fabric"} onClick={()=>setGallery("fabric")}>FABRIC</button>
-          <button className={gallery==="specs"?"active":""} role="tab" aria-selected={gallery==="specs"} onClick={()=>setGallery("specs")}>SPEC</button>
+          <button id={`gallery-tab-${product.id}-product`} className={gallery==="product"?"active":""} role="tab" aria-label={t.product} aria-controls={`gallery-panel-${product.id}`} aria-selected={gallery==="product"} onClick={()=>setGallery("product")}><img src={image} alt=""/></button>
+          <button id={`gallery-tab-${product.id}-fabric`} className={gallery==="fabric"?"active":""} role="tab" aria-controls={`gallery-panel-${product.id}`} aria-selected={gallery==="fabric"} onClick={()=>setGallery("fabric")}>FABRIC</button>
+          <button id={`gallery-tab-${product.id}-specs`} className={gallery==="specs"?"active":""} role="tab" aria-controls={`gallery-panel-${product.id}`} aria-selected={gallery==="specs"} onClick={()=>setGallery("specs")}>SPEC</button>
         </div>
       </div>
-      <div className="modal-content"><div className="modal-eyebrow">{text.category} / {product.badge}</div><div className="modal-title-row"><div><h2>{product.name}</h2><p>{text.description}</p></div><button aria-label={t.wishlist} className={`heart-button ${liked?"liked":""}`} onClick={onLike}><Icon name="heart"/></button></div><div className="modal-price-line"><strong>{money(product.price)}</strong>{product.compareAt&&<del>{money(product.compareAt)}</del>}<span>{canAdd?ui.stockLeft(available):t.soldOut}</span></div><div className="spec-row"><span>{t.color}<b>{text.color}</b></span><span>{t.fit}<b>{text.fit}</b></span><span>{t.material}<b>{text.material}</b></span></div><div className="size-head"><b>{t.selectSize}</b><details className="size-guide"><summary>{t.sizeGuide}</summary><p>{ui.sizeGuideText}</p></details></div><div className="size-grid">{product.sizes.map(s=><button key={s} className={size===s?"active":""} onClick={()=>setSize(s)}>{s}</button>)}</div><button className="button button-dark full" onClick={onAdd} disabled={!size||!canAdd}>{canAdd?(size?t.add:t.selectSize):t.soldOut}<Icon name="arrow"/></button><div className="detail-list">{text.details.map(d=><div key={d}><Icon name="check"/>{d}</div>)}</div><section className="related-products" aria-label={t.youMayLike}><h3>{t.youMayLike}</h3><div>{related.map(item=>{const relatedText=productText(item,t.lang);return <button key={item.id} onClick={()=>onOpenRelated(item)}><span><small>{relatedText.category}</small><b>{item.name}</b></span><strong>{money(item.price)}<Icon name="arrow" size={14}/></strong></button>})}</div></section><div className="modal-trust"><span><Icon name="truck"/> {t.delivery}</span><span><Icon name="shield"/> {t.secure}</span></div></div>
+      <div className="modal-content"><div className="modal-eyebrow">{text.category} / {product.badge}</div><div className="modal-title-row"><div><h2>{product.name}</h2><p>{text.description}</p></div><button aria-label={t.wishlist} aria-pressed={liked} className={`heart-button ${liked?"liked":""}`} onClick={onLike}><Icon name="heart"/></button></div><div className="modal-price-line"><strong>{money(product.price)}</strong>{product.compareAt&&<del>{money(product.compareAt)}</del>}<span>{canAdd?ui.stockLeft(available):t.soldOut}</span></div><div className="spec-row"><span>{t.color}<b>{text.color}</b></span><span>{t.fit}<b>{text.fit}</b></span><span>{t.material}<b>{text.material}</b></span></div><div className="size-head"><b>{t.selectSize}</b><details className="size-guide"><summary>{t.sizeGuide}</summary><p>{ui.sizeGuideText}</p></details></div><div className="size-grid">{product.sizes.map(s=><button key={s} aria-pressed={size===s} className={size===s?"active":""} onClick={()=>setSize(s)}>{s}</button>)}</div><button className="button button-dark full" onClick={onAdd} disabled={!size||!canAdd}>{canAdd?(size?t.add:t.selectSize):t.soldOut}<Icon name="arrow"/></button><div className="detail-list">{text.details.map(d=><div key={d}><Icon name="check"/>{d}</div>)}</div><section className="related-products" aria-label={t.youMayLike}><h3>{t.youMayLike}</h3><div>{related.map(item=>{const relatedText=productText(item,t.lang);return <button key={item.id} onClick={()=>onOpenRelated(item)}><span><small>{relatedText.category}</small><b>{item.name}</b></span><strong>{money(item.price)}<Icon name="arrow" size={14}/></strong></button>})}</div></section><div className="modal-trust"><span><Icon name="truck"/> {t.delivery}</span><span><Icon name="shield"/> {t.secure}</span></div></div>
     </div>
   </div>
 }

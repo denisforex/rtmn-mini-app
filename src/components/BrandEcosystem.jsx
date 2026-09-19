@@ -40,8 +40,8 @@ export function PhilosophySection({ items }) {
   const current = items.find(item => item.id === active) ?? items[0];
   return <section className="brand-section philosophy-section" id="rtmn-philosophy" aria-labelledby="philosophy-title">
     <div><span>RTMN / PHILOSOPHY</span><h2 id="philosophy-title">RAW TRUE<br />MODERN NEW</h2></div>
-    <div className="philosophy-controls" role="tablist" aria-label="RTMN philosophy">{items.map(item => <button key={item.id} role="tab" aria-selected={current.id === item.id} className={current.id === item.id ? "active" : ""} onClick={() => setActive(item.id)}>{item.word}</button>)}</div>
-    <p className="philosophy-statement" role="tabpanel">{current.statement}</p>
+    <div className="philosophy-controls" role="tablist" aria-label="RTMN philosophy">{items.map(item => <button key={item.id} id={`philosophy-tab-${item.id}`} role="tab" aria-controls="philosophy-panel" aria-selected={current.id === item.id} tabIndex={current.id === item.id ? 0 : -1} className={current.id === item.id ? "active" : ""} onClick={() => setActive(item.id)}>{item.word}</button>)}</div>
+    <p className="philosophy-statement" id="philosophy-panel" role="tabpanel" aria-labelledby={`philosophy-tab-${current.id}`}>{current.statement}</p>
   </section>;
 }
 

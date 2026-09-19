@@ -11,7 +11,9 @@
   --spectral-violet: transparent; --spectral-lilac: transparent; --spectral-indigo: #dbe2d7; --graphite-violet-ink: transparent;
   --spectral-line: rgb(232 237 226 / 16%); --graphite-sheen: rgb(232 237 226 / 4%); --graphite-grain: rgb(232 237 226 / 2%);
 }
-html, body, .site-shell { background: #070908; }
+html, body, .site-shell { max-width: 100%; background: #070908; }
+html, body { overflow-x: clip; }
+body { min-width: 0; }
 body { color: var(--text); }
 ::selection { background: #e8ebe4; color: #070908; }
 .site-shell { overflow: clip; background-image: none; }
