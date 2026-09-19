@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Icon } from "./Icon";
 import heroWorld from "../assets/rtmn-world-hero-v2.png";
-import otherSideWorld from "../assets/rtmn-world-other-side-v2.png";
+import otherSideWorld from "../assets/rtmn-world-other-side-v3.png";
 
 const copy = {
   en: {
