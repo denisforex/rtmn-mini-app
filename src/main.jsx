@@ -26,6 +26,17 @@ const productImages = {
   Jackets: technicalJacket,
 };
 
+// These are deliberately fixed editorial identifiers: the product data stays localised,
+// while the RTMN object language remains consistent throughout the world.
+const productObjectSpecs = {
+  1: { weight: "240 GSM", fit: "OVERSIZED" },
+  2: { weight: "480 GSM", fit: "OVERSIZED" },
+  3: { weight: "310 GSM", fit: "RELAXED" },
+  4: { weight: "220 GSM", fit: "REGULAR" },
+  5: { weight: "350 GSM", fit: "BOX FIT" },
+  6: { weight: "420 GSM", fit: "RELAXED" },
+};
+
 const copy = {
   en: {
     nav: { home:"Home", shop:"Shop", collections:"Collections", new:"New drop", tees:"T-Shirts", hoodies:"Hoodies", pants:"Pants" }, search:"Search", account:"Account", wishlist:"Wishlist", bag:"Bag", menu:"Menu", language:"Language", themeToDark:"Use dark theme", themeToLight:"Use light theme",
@@ -227,7 +238,7 @@ function App(){
     {checkout && <CheckoutView t={t} ui={commerceCopy[lang]} cart={cart} subtotal={subtotal} shipping={shipping} total={total} onBack={()=>setCheckout(false)} onSuccess={submitOrder}/>}
     {success && <SuccessView t={t} ui={commerceCopy[lang]} order={success} onBack={()=>{setSuccess(null);setView("cart")}}/>}
 
-    <footer className="footer"><div className="footer-top"><div className="footer-brand"><div className="footer-logo">RTMN<span>.</span></div><p>{t.footerText}</p><div className="footer-local">LOCAL FRONTEND PREVIEW</div></div><div className="footer-links"><FooterCol title={t.footerShop} items={[t.nav.shop,t.nav.new,t.nav.tees,t.nav.hoodies,t.nav.pants]}/><FooterCol title={t.footerHelp} items={[t.shippingInfo,t.returns,t.contactUs]}/><FooterCol title={t.footerLegal} items={[t.privacy,t.imprint]}/></div></div><div className="footer-bottom"><span>{t.footerNote}</span><span>DE / EN / UA</span></div></footer>
+    <footer className="footer"><div className="footer-top"><div className="footer-brand"><div className="footer-logo">RTMN<span>.</span></div><p className="footer-manifest">RAW <i>/</i> TRUE <i>/</i> MODERN <i>/</i> NEW</p></div><div className="footer-links"><FooterCol title={t.footerShop} items={[t.nav.shop,t.nav.new,t.nav.tees,t.nav.hoodies,t.nav.pants]}/><FooterCol title={t.footerHelp} items={[t.shippingInfo,t.returns,t.contactUs]}/><FooterCol title={t.footerLegal} items={[t.privacy,t.imprint]}/></div></div><div className="footer-bottom"><span>{t.footerNote}</span><span>DE / EN / UA</span></div></footer>
 
     <nav className="mobile-bottom-nav" aria-label={t.menu}>
       <button className={view==="shop"?"active":""} onClick={()=>{setView("shop");window.scrollTo({top:0,behavior:window.matchMedia?.("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}}><Icon name="home"/>{t.nav.home}</button>
@@ -261,6 +272,7 @@ function ProductCard({product,t,liked,onLike,onOpen,index}){
   const text=productText(product,t.lang);
   const sizeCount=t.lang==="de"?`${product.sizes.length} Größen`:t.lang==="uk"?`${product.sizes.length} розмірів`:`${product.sizes.length} sizes`;
   const image=productImages[product.category] ?? teeStone;
+  const object=productObjectSpecs[product.id] ?? {weight:"—",fit:"RTMN"};
   return <article className="product-card" style={{"--delay":`${index*70}ms`}}>
     <div className="product-visual-button">
       <button className="product-main-click" onClick={onOpen} aria-label={`${t.viewProduct}: ${product.name}`}>
@@ -269,7 +281,7 @@ function ProductCard({product,t,liked,onLike,onOpen,index}){
       <span className="product-index">0{product.id}</span>
       <button aria-label={t.wishlist} className={`heart-button ${liked?"liked":""}`} onClick={onLike}><Icon name="heart"/></button>
     </div>
-    <div className="product-info"><div><div className="product-category">{text.category}</div><h3>{product.name}</h3><div className="product-sub">{text.color}</div></div><div className="product-price"><span>{money(product.price)}</span>{product.compareAt&&<del>{money(product.compareAt)}</del>}</div></div>
+    <div className="product-info"><div className="product-object-copy"><div className="product-category">OBJECT {String(product.id).padStart(3,"0")}</div><h3>{product.name}</h3><div className="product-sub">{text.color}</div><div className="product-specs"><span>{object.weight}</span><span>{object.fit}</span></div></div><div className="product-price"><span>{money(product.price)}</span>{product.compareAt&&<del>{money(product.compareAt)}</del>}</div></div>
     <div className="product-actions"><button onClick={onOpen}>{t.viewProduct}<Icon name="arrow"/></button><span>{product.inStock?sizeCount:t.soldOut}</span></div>
   </article>
 }

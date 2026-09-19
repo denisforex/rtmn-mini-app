@@ -58,6 +58,9 @@ export function RTMNJourney({ children }) {
       }
       element.style.setProperty("--journey", progress.toFixed(4));
       element.style.setProperty("--camera", `${Math.round((progress - .5) * -16)}px`);
+      element.style.setProperty("--camera-y", `${Math.round((progress - .5) * 11)}px`);
+      element.style.setProperty("--other-camera", `${Math.round((progress - .48) * 9)}px`);
+      element.style.setProperty("--other-camera-y", `${Math.round((progress - .5) * -13)}px`);
     };
     const requestUpdate = () => { if (!frame) frame = window.requestAnimationFrame(update); };
     const stop = () => {
@@ -74,6 +77,9 @@ export function RTMNJourney({ children }) {
       if (reduced.matches) {
         element.style.setProperty("--journey", "0");
         element.style.setProperty("--camera", "0px");
+        element.style.setProperty("--camera-y", "0px");
+        element.style.setProperty("--other-camera", "0px");
+        element.style.setProperty("--other-camera-y", "0px");
         return;
       }
       listening = true;
