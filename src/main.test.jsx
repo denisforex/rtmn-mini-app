@@ -77,7 +77,7 @@ describe("RTMN baseline", () => {
   it("applies and resets size and color filters from the drawer", async () => {
     const user = userEvent.setup();
     const { container } = mount();
-    await user.click(screen.getByRole("button", { name: "Filters", exact: true }));
+    await user.click(screen.getByRole("button", { name: "Refine", exact: true }));
     const drawer = screen.getByRole("dialog", { name: "Refine" });
     await user.click(within(drawer).getByRole("button", { name: "S", exact: true }));
     await user.click(within(drawer).getByRole("button", { name: "Stone" }));
@@ -85,7 +85,7 @@ describe("RTMN baseline", () => {
     expect(container.querySelectorAll("article")).toHaveLength(1);
     expect(card("Utility Cargo")).toBeInTheDocument();
     expect(screen.getByText("2", { selector: ".filter-count" })).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: /Filters/ }));
+    await user.click(screen.getByRole("button", { name: /Refine/ }));
     await user.click(screen.getByRole("button", { name: "Reset", exact: true }));
     await user.click(screen.getByRole("button", { name: "Apply filters", exact: true }));
     expect(container.querySelectorAll("article")).toHaveLength(6);

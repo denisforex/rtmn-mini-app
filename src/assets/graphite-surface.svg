@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640">
+  <filter id="mineral" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency=".025 .05" numOctaves="4" seed="12" stitchTiles="stitch" result="height"/>
+    <feDiffuseLighting in="height" surfaceScale="6" diffuseConstant="1.2" lighting-color="#d4d4d4" result="lit"><feDistantLight azimuth="225" elevation="42"/></feDiffuseLighting>
+    <feTurbulence type="fractalNoise" baseFrequency=".42" numOctaves="2" stitchTiles="stitch" result="fine"/>
+    <feBlend in="lit" in2="fine" mode="multiply"/>
+    <feColorMatrix type="saturate" values="0"/>
+  </filter>
+  <path d="M0 0h640v640H0z" filter="url(#mineral)" fill="#888"/>
+</svg>
