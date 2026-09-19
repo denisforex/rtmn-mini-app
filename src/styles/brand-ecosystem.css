@@ -1,0 +1,100 @@
+/* Content layers for the RTMN world. The world remains atmospheric; each interactive layer stays clear. */
+.brand-section, .brand-page { position: relative; z-index: 2; max-width: 1440px; margin-inline: auto; padding: clamp(5rem, 11vh, 9rem) clamp(1.25rem, 7vw, 6.4rem); }
+.brand-section-heading > span, .brand-index-head > span, .journal-header > span, .drop-system span, .campaign-copy > span, .campaign-page-hero span, .journal-page-article span, .search-eyebrow { color: #9da49e; font-size: .52rem; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+.brand-section-heading h2, .brand-index-head h2 { max-width: 20rem; margin: .8rem 0 0; color: #edf0ec; font-size: clamp(2.2rem, 4.7vw, 5.3rem); font-weight: 690; letter-spacing: -.07em; line-height: .9; }
+.brand-section-heading p { max-width: 19rem; margin: 1.3rem 0 0; color: #aeb5af; font-size: .78rem; line-height: 1.6; }
+
+/* Shop by category */
+.category-navigator { min-height: 0; padding-bottom: clamp(5rem, 12vh, 10rem); }
+.category-panels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(.65rem, 1.4vw, 1.2rem); margin-top: clamp(2rem, 5vh, 4.25rem); }
+.category-panel { position: relative; min-height: clamp(20rem, 36vw, 32rem); overflow: hidden; border: 1px solid rgb(232 237 226 / 12%); background: #111312; color: #edf0ec; text-align: left; }
+.category-panel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.04) brightness(.66); transition: transform 700ms cubic-bezier(.16, 1, .3, 1), filter 500ms ease; }
+.category-panel:hover img, .category-panel:focus-visible img { filter: grayscale(1) contrast(1.04) brightness(.82); transform: scale(1.035); }
+.category-panel-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(0 0 0 / 7%), rgb(0 0 0 / 66%)); }
+.category-panel-number { position: absolute; top: .8rem; left: .85rem; color: rgb(232 237 226 / 63%); font-size: .5rem; font-weight: 750; letter-spacing: .14em; }
+.category-panel-copy { position: absolute; right: 1rem; bottom: 1rem; left: 1rem; display: grid; gap: .6rem; }
+.category-panel-copy b { font-size: clamp(.82rem, 1.1vw, 1.05rem); letter-spacing: .09em; }
+.category-panel-copy small { min-height: 2.6em; color: #c7cdc5; font-size: .65rem; line-height: 1.45; }
+.category-panel-copy i { display: inline-flex; align-items: center; gap: .35rem; color: #e7ebe5; font-size: .52rem; font-style: normal; font-weight: 750; letter-spacing: .12em; }
+
+/* Campaign */
+.campaign-feature { min-height: 82svh; overflow: hidden; display: flex; align-items: end; isolation: isolate; }
+.campaign-image, .campaign-overlay { position: absolute; inset: 0; width: 100%; height: 100%; }
+.campaign-image { object-fit: cover; filter: grayscale(1) contrast(1.04) brightness(.68); }
+.campaign-overlay { background: linear-gradient(90deg, rgb(0 0 0 / 72%), rgb(0 0 0 / 13%) 70%), linear-gradient(0deg, rgb(0 0 0 / 38%), transparent 58%); }
+.campaign-copy { position: relative; z-index: 1; width: min(30rem, 55%); padding: clamp(2rem, 5vw, 5.5rem); }
+.campaign-copy h2 { margin: .8rem 0 1.1rem; color: #f0f2ed; font-size: clamp(2.8rem, 5.8vw, 6.7rem); font-weight: 700; letter-spacing: -.08em; line-height: .86; }
+.campaign-copy p { max-width: 20rem; margin: 0 0 1.5rem; color: #c1c8bf; font-size: .78rem; line-height: 1.55; }
+
+/* Objects and material */
+.object-laboratory { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(2rem, 7vw, 7rem); align-items: start; }
+.object-study-list { display: grid; margin-top: .3rem; border-top: 1px solid rgb(232 237 226 / 16%); }
+.object-study-list button { position: relative; display: grid; grid-template-columns: 6.5rem 1fr auto; gap: .75rem; align-items: center; min-height: 5rem; padding: 1rem 0; border-bottom: 1px solid rgb(232 237 226 / 13%); color: #e8ebe5; text-align: left; }
+.object-study-list button:hover b, .object-study-list button:focus-visible b { color: #fff; }
+.object-study-list span { color: #89918a; font-size: .49rem; font-weight: 750; letter-spacing: .14em; }
+.object-study-list b { font-size: .68rem; letter-spacing: .075em; }
+.object-study-list small { grid-column: 2; color: #a8afa8; font-size: .62rem; line-height: 1.45; }
+.object-study-list svg { grid-row: span 2; color: #cbd0c9; }
+.material-study-grid { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-top: clamp(1rem, 3vh, 2rem); border: 1px solid rgb(232 237 226 / 15%); background: rgb(232 237 226 / 15%); }
+.material-study { position: relative; min-height: 20rem; overflow: hidden; background: #0d0f0e; color: #edf0ec; text-align: left; }
+.material-study img, .material-study-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.material-study img { object-fit: cover; filter: grayscale(1) contrast(1.06) brightness(.6); transition: transform 650ms cubic-bezier(.16, 1, .3, 1); }
+.material-study:hover img, .material-study:focus-visible img { transform: scale(1.04); }
+.material-study-shade { background: linear-gradient(0deg, rgb(0 0 0 / 73%), transparent 68%); }
+.material-study > span { position: absolute; right: 1.05rem; bottom: 1.05rem; left: 1.05rem; display: grid; gap: .5rem; }
+.material-study small { color: #aeb5ad; font-size: .5rem; font-weight: 750; letter-spacing: .14em; }
+.material-study b { font-size: .75rem; letter-spacing: .075em; }
+.material-study i { color: #c0c6be; font-size: .63rem; font-style: normal; line-height: 1.4; }
+
+/* Four words as a small, usable philosophy control. */
+.philosophy-section { display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, .72fr); gap: 1.3rem clamp(2rem, 8vw, 9rem); align-items: end; border-top: 1px solid rgb(232 237 226 / 14%); border-bottom: 1px solid rgb(232 237 226 / 14%); background: rgb(6 8 7 / 25%); }
+.philosophy-section > div > span { color: #9da49e; font-size: .52rem; font-weight: 750; letter-spacing: .16em; }
+.philosophy-section h2 { margin: .8rem 0 0; color: #eef1ed; font-size: clamp(2.15rem, 4.3vw, 5rem); font-weight: 690; letter-spacing: -.065em; line-height: .9; }
+.philosophy-controls { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid rgb(232 237 226 / 15%); }
+.philosophy-controls button { min-height: 4.4rem; border-right: 1px solid rgb(232 237 226 / 13%); border-bottom: 1px solid rgb(232 237 226 / 13%); color: #7f877f; font-size: .68rem; font-weight: 760; letter-spacing: .12em; }
+.philosophy-controls button:nth-child(2n) { border-right: 0; }.philosophy-controls button:nth-last-child(-n+2) { border-bottom: 0; }
+.philosophy-controls button.active, .philosophy-controls button:hover { background: rgb(232 237 226 / 9%); color: #eff2ee; }
+.philosophy-statement { grid-column: 2; margin: 0; color: #c7cdc5; font-size: clamp(1rem, 1.45vw, 1.3rem); font-weight: 620; line-height: 1.25; }
+
+/* Projects, journal and map stay concise and actionable. */
+.brand-index { background: linear-gradient(90deg, rgb(3 4 4 / 23%), transparent 58%, rgb(3 4 4 / 18%)); }
+.brand-index-head { max-width: 33rem; }
+.project-records { margin-top: clamp(2rem, 5vh, 4rem); border-top: 1px solid rgb(232 237 226 / 16%); }
+.project-record { display: grid; grid-template-columns: 7rem minmax(0, 1fr) minmax(12rem, .65fr) auto; gap: 1rem; align-items: center; width: 100%; min-height: 7.8rem; padding: 1.2rem 0; border-bottom: 1px solid rgb(232 237 226 / 15%); color: #e8ebe5; text-align: left; }
+.project-record > span { color: #909790; font-size: .52rem; font-weight: 750; letter-spacing: .14em; }.project-record b { font-size: clamp(1rem, 2vw, 1.6rem); letter-spacing: -.04em; }.project-record p { margin: 0; color: #aab1a9; font-size: .7rem; line-height: 1.5; }.project-record i { display: inline-flex; align-items: center; gap: .4rem; color: #dce1db; font-size: .5rem; font-style: normal; font-weight: 750; letter-spacing: .1em; }
+.journal-header { display: flex; justify-content: space-between; gap: 2rem; margin-top: clamp(4rem, 9vh, 8rem); padding-bottom: 1.1rem; border-bottom: 1px solid rgb(232 237 226 / 15%); }.journal-header p { max-width: 20rem; margin: 0; color: #aeb5ad; font-size: .72rem; line-height: 1.55; }
+.journal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; border: 1px solid rgb(232 237 226 / 14%); background: rgb(232 237 226 / 14%); }
+.journal-card { position: relative; min-height: 27rem; overflow: hidden; background: #0c0e0d; color: #eef1ed; text-align: left; }
+.journal-card img, .journal-card-shade { position: absolute; inset: 0; width: 100%; height: 100%; }.journal-card img { object-fit: cover; filter: grayscale(1) contrast(1.04) brightness(.56); transition: transform 700ms cubic-bezier(.16, 1, .3, 1); }.journal-card:hover img, .journal-card:focus-visible img { transform: scale(1.035); }.journal-card-shade { background: linear-gradient(0deg, rgb(0 0 0 / 78%), transparent 70%); }
+.journal-card > span { position: absolute; right: 1.3rem; bottom: 1.3rem; left: 1.3rem; display: grid; gap: .55rem; }.journal-card small { color: #b4bab3; font-size: .5rem; font-weight: 750; letter-spacing: .13em; }.journal-card b { font-size: clamp(1.35rem, 2.4vw, 2.5rem); font-weight: 670; letter-spacing: -.06em; line-height: .9; }.journal-card i { max-width: 18rem; color: #c0c6bf; font-size: .7rem; font-style: normal; line-height: 1.45; }.journal-card em { display: inline-flex; align-items: center; gap: .35rem; margin-top: .25rem; color: #e7eae5; font-size: .5rem; font-style: normal; font-weight: 750; letter-spacing: .12em; }
+.brand-map { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin-top: clamp(3rem, 7vh, 6rem); border: 1px solid rgb(232 237 226 / 13%); background: rgb(232 237 226 / 13%); }.brand-map > span { grid-column: 1 / -1; padding: .9rem 1rem; color: #89918a; background: rgb(8 10 9 / 66%); font-size: .51rem; font-weight: 750; letter-spacing: .15em; }.brand-map button { display: flex; min-height: 3.5rem; align-items: center; justify-content: space-between; gap: .3rem; padding: .6rem .8rem; background: rgb(10 12 11 / 64%); color: #bdc4bc; font-size: .54rem; font-weight: 740; letter-spacing: .09em; text-align: left; }.brand-map button:hover, .brand-map button:focus-visible { background: rgb(45 49 46 / 65%); color: #f0f2ed; }
+
+/* Reusable, strictly aligned product selections. */
+.selected-objects { min-height: 0; }.brand-product-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 2.1rem); margin-top: clamp(2rem, 5vh, 4rem); }.brand-product-grid .product-card { height: 100%; }
+.drop-system { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; padding-top: 0; padding-bottom: 0; border: 1px solid rgb(232 237 226 / 15%); background: rgb(232 237 226 / 15%); }.drop-system > div { min-height: 18rem; padding: clamp(1.4rem, 4vw, 3.2rem); background: rgb(7 9 8 / 63%); }.drop-system h2 { margin: .85rem 0 .8rem; color: #edf0ec; font-size: clamp(2rem, 4.2vw, 4.4rem); font-weight: 690; letter-spacing: -.065em; line-height: .9; }.drop-system p { max-width: 18rem; color: #aeb5ad; font-size: .76rem; line-height: 1.55; }.drop-system i { display: block; margin-top: 1.8rem; color: #8f968e; font-size: .52rem; font-style: normal; font-weight: 750; letter-spacing: .13em; }
+
+/* Campaign and journal have real, dedicated views with related products. */
+.brand-page { min-height: 100svh; padding-top: clamp(4.5rem, 10vh, 8rem); }.brand-back { position: relative; z-index: 2; margin-bottom: 1.15rem; color: #b9c0b8; font-size: .54rem; font-weight: 750; letter-spacing: .12em; }.brand-back:hover { color: #f0f2ed; }.campaign-page-hero { position: relative; min-height: min(76svh, 54rem); overflow: hidden; display: flex; align-items: end; }.campaign-page-hero > img, .campaign-page-hero > div:first-of-type { position: absolute; inset: 0; width: 100%; height: 100%; }.campaign-page-hero > img { object-fit: cover; filter: grayscale(1) contrast(1.04) brightness(.64); }.campaign-page-hero > div:first-of-type { background: linear-gradient(90deg, rgb(0 0 0 / 73%), transparent 68%), linear-gradient(0deg, rgb(0 0 0 / 45%), transparent 62%); }.campaign-page-hero > div:last-child { position: relative; z-index: 1; width: min(32rem, 62%); padding: clamp(1.5rem, 5vw, 5rem); }.campaign-page-hero h1, .journal-page-article h1 { margin: .7rem 0 1rem; color: #eff1ed; font-size: clamp(2.8rem, 6vw, 7.2rem); font-weight: 700; letter-spacing: -.08em; line-height: .86; }.campaign-page-hero p { max-width: 20rem; margin: 0; color: #c1c7bf; font-size: .8rem; line-height: 1.55; }.campaign-page-objects, .journal-related { padding-top: clamp(4.5rem, 9vh, 8rem); }.journal-page-article { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(18rem, .95fr); min-height: 39rem; background: rgb(9 11 10 / 58%); }.journal-page-article > img { width: 100%; height: 100%; min-height: 28rem; object-fit: cover; filter: grayscale(1) contrast(1.04) brightness(.68); }.journal-page-article > div { display: flex; flex-direction: column; justify-content: end; padding: clamp(1.75rem, 5vw, 5rem); }.journal-page-article p { max-width: 28rem; margin: 0; color: #c3c9c2; font-size: clamp(.85rem, 1.3vw, 1rem); line-height: 1.65; }
+
+/* Search can now surface the rest of RTMN without mixing it into product results. */
+.search-head { align-items: flex-start; }.search-eyebrow { margin-bottom: .65rem; }.search-discoveries { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-top: 1.2rem; border: 1px solid rgb(232 237 226 / 13%); background: rgb(232 237 226 / 13%); }.search-discoveries section { display: grid; align-content: start; background: rgb(8 10 9 / 75%); }.search-discoveries section > span { padding: .75rem .85rem; color: #89918a; font-size: .49rem; font-weight: 750; letter-spacing: .13em; }.search-discoveries button { display: flex; min-height: 2.8rem; align-items: center; justify-content: space-between; gap: .4rem; padding: .55rem .8rem; border-top: 1px solid rgb(232 237 226 / 11%); color: #c7cdc5; font-size: .57rem; font-weight: 700; letter-spacing: .045em; text-align: left; }.search-discoveries button:hover { background: rgb(232 237 226 / 9%); color: #f0f2ed; }
+
+@media (max-width: 900px) {
+  .category-panels { grid-template-columns: repeat(2, minmax(0, 1fr)); }.category-panel { min-height: 25rem; }
+  .object-laboratory { grid-template-columns: 1fr; }.material-study-grid { grid-column: auto; }
+  .philosophy-section { grid-template-columns: 1fr; }.philosophy-statement { grid-column: auto; }
+  .brand-map { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .journal-page-article { grid-template-columns: 1fr; }.journal-page-article > div { min-height: 24rem; }
+}
+@media (max-width: 640px) {
+  .brand-section, .brand-page { padding: 4rem 1.25rem; }.brand-section-heading h2, .brand-index-head h2 { font-size: clamp(2rem, 11vw, 3.25rem); }
+  .category-panels { gap: .55rem; margin-top: 1.8rem; }.category-panel { min-height: 16.5rem; }.category-panel-copy { right: .75rem; bottom: .75rem; left: .75rem; }.category-panel-copy b { font-size: .64rem; }.category-panel-copy small { display: none; }
+  .campaign-feature { min-height: 34rem; padding: 0; }.campaign-copy { width: 100%; padding: 1.35rem; }.campaign-copy h2 { font-size: clamp(2.6rem, 13vw, 4rem); }.campaign-copy p { font-size: .72rem; }
+  .object-study-list button { grid-template-columns: 5.3rem 1fr auto; min-height: 4.65rem; }.object-study-list b { font-size: .58rem; }.object-study-list small { font-size: .54rem; }.material-study-grid { grid-template-columns: 1fr; }.material-study { min-height: 15rem; }
+  .philosophy-controls button { min-height: 3.5rem; font-size: .57rem; }.philosophy-statement { font-size: 1rem; }
+  .project-record { grid-template-columns: 1fr auto; gap: .6rem; min-height: 0; padding: 1rem 0; }.project-record > span { grid-column: 1; }.project-record b { grid-column: 1; font-size: 1.22rem; }.project-record p { grid-column: 1; font-size: .62rem; }.project-record i { grid-column: 2; grid-row: 1 / span 3; align-self: center; font-size: .44rem; }.journal-header { display: block; margin-top: 3.5rem; }.journal-header p { margin-top: .8rem; }.journal-grid { grid-template-columns: 1fr; }.journal-card { min-height: 22rem; }.brand-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }.brand-map button { min-height: 3rem; font-size: .48rem; }
+  .brand-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem .7rem; }.drop-system { grid-template-columns: 1fr; }.drop-system > div { min-height: 13.5rem; }.drop-system h2 { font-size: 2.25rem; }
+  .campaign-page-hero { min-height: 33rem; }.campaign-page-hero > div:last-child { width: 100%; padding: 1.35rem; }.campaign-page-hero h1, .journal-page-article h1 { font-size: clamp(2.45rem, 13vw, 4.1rem); }.campaign-page-hero p, .journal-page-article p { font-size: .75rem; }.journal-page-article { min-height: 0; }.journal-page-article > img { min-height: 19rem; }.journal-page-article > div { min-height: 21rem; padding: 1.35rem; }
+  .search-discoveries { grid-template-columns: 1fr; }.search-discoveries section > span { padding: .65rem .75rem; }
+}
+@media (prefers-reduced-motion: reduce) { .category-panel img, .material-study img, .journal-card img { transition: none; } }

@@ -13,11 +13,16 @@ import hoodieMoss from "./assets/optimized/rtmn-hoodie-moss.webp";
 import teeStone from "./assets/optimized/rtmn-tee-stone.webp";
 import utilityWood from "./assets/optimized/rtmn-utility-wood.webp";
 import { RTMNJourney, RTMNHero, RTMNCollection, RTMNStory, RTMNOtherSide } from "./components/RTMNWorld";
+import { BrandIndex, CampaignFeature, CampaignPage, CategoryNavigator, DropSystem, JournalPage, ObjectLaboratory, PhilosophySection, SelectedObjects } from "./components/BrandEcosystem";
+import { brandMap, campaigns, dropSystem, journalEntries, materialStudies, objectStudies, philosophy, projects, shopCategories } from "./data/brandContent";
+import campaignEditorial from "./assets/optimized/rtmn-hero-editorial.webp";
+import materialStudy from "./assets/optimized/rtmn-material-study.webp";
 
 
 import technicalJacket from "./assets/optimized/rtmn-technical-jacket.webp";
 import "./styles/rtmn-dark.css";
 import "./styles/rtmn-world.css";
+import "./styles/brand-ecosystem.css";
 
 const productImages = {
   "T-Shirts": teeStone,
@@ -26,14 +31,16 @@ const productImages = {
   Jackets: technicalJacket,
 };
 
+const brandImages = { campaign: campaignEditorial, material: materialStudy, jacket: technicalJacket, hoodie: hoodieMoss, tee: teeStone, cargo: utilityWood };
+
 // These are deliberately fixed editorial identifiers: the product data stays localised,
 // while the RTMN object language remains consistent throughout the world.
 const productObjectSpecs = {
-  1: { weight: "240 GSM", fit: "OVERSIZED" },
+  1: { weight: "260 GSM", fit: "OVERSIZED" },
   2: { weight: "480 GSM", fit: "OVERSIZED" },
-  3: { weight: "310 GSM", fit: "RELAXED" },
+  3: { weight: "COTTON RIPSTOP", fit: "RELAXED" },
   4: { weight: "220 GSM", fit: "REGULAR" },
-  5: { weight: "350 GSM", fit: "BOX FIT" },
+  5: { weight: "COTTON NYLON", fit: "BOX FIT" },
   6: { weight: "420 GSM", fit: "RELAXED" },
 };
 
@@ -140,6 +147,8 @@ function App(){
   const [menuOpen,setMenuOpen]=useState(false);
   const [checkout,setCheckout]=useState(false);
   const [success,setSuccess]=useState(null);
+  const [activeCampaign,setActiveCampaign]=useState(campaigns[0]?.id ?? null);
+  const [activeJournal,setActiveJournal]=useState(null);
 
   const t={...copy[lang],lang};
   const home=homeCopy[lang];
@@ -167,6 +176,16 @@ function App(){
   const filterCount=activeFilterCount(filters);
   const recentProducts=useMemo(()=>recent.map((id)=>catalogProducts.find((product)=>product.id===id)).filter(Boolean),[recent,catalogProducts]);
   const relatedProducts=useMemo(()=>selected?catalogProducts.filter(product=>product.id!==selected.id).sort((a,b)=>(a.category===selected.category?0:1)-(b.category===selected.category?0:1)).slice(0,3):[],[selected,catalogProducts]);
+  const selectedObjects=useMemo(()=>objectStudies.map(item=>catalogProducts.find(product=>product.id===item.productId)).filter(Boolean),[catalogProducts]);
+  const activeCampaignData=campaigns.find(item=>item.id===activeCampaign) ?? campaigns[0];
+  const campaignProducts=useMemo(()=>activeCampaignData?.productIds.map(id=>catalogProducts.find(product=>product.id===id)).filter(Boolean) ?? [],[activeCampaignData,catalogProducts]);
+  const activeJournalData=journalEntries.find(item=>item.id===activeJournal) ?? null;
+  const journalProducts=useMemo(()=>activeJournalData?.productIds.map(id=>catalogProducts.find(product=>product.id===id)).filter(Boolean) ?? [],[activeJournalData,catalogProducts]);
+  const searchDiscoveries=useMemo(()=>{
+    const needle=query.trim().toLowerCase();
+    const matches=item=>!needle||[item.label,item.title,item.note,item.type,item.summary,item.eyebrow].filter(Boolean).join(" ").toLowerCase().includes(needle);
+    return {categories:shopCategories.filter(matches),projects:projects.filter(matches),stories:journalEntries.filter(matches)};
+  },[query]);
 
   const scrollTo=(id)=>{document.getElementById(id)?.scrollIntoView({behavior:window.matchMedia?.("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});setMenuOpen(false)};
   const setCat=(c)=>{setCollection("all");setCategory(c);trackEvent("catalog_category_selected",{category:c});setView("shop");setTimeout(()=>scrollTo("catalog"),30)};
@@ -177,6 +196,10 @@ function App(){
   const updateQty=(key,delta)=>setCart(c=>c.map(x=>{if(x.key!==key)return x;const stock=inventory[x.id]?.quantity??0;const otherQty=c.filter(item=>item.id===x.id&&item.key!==x.key).reduce((sum,item)=>sum+item.qty,0);const maxForLine=Math.max(0,stock-otherQty);if(delta>0&&x.qty>=maxForLine)return x;return {...x,qty:Math.max(1,Math.min(maxForLine,x.qty+delta))}}).filter(x=>(inventory[x.id]?.quantity??0)>0));
   const remove=x=>setCart(c=>c.filter(i=>i.key!==x));
   const openProduct=p=>{setRecent(current=>[p.id,...current.filter((id)=>id!==p.id)].slice(0,4));setSelected(p);setSelectedSize("");};
+  const openProductById=id=>{const product=catalogProducts.find(item=>item.id===id);if(product)openProduct(product);};
+  const openCampaign=id=>{setActiveCampaign(id);setView("campaign");};
+  const openJournal=id=>{setActiveJournal(id);setView("journal");};
+  const renderBrandProduct=(product,index)=><ProductCard key={product.id} product={product} t={t} liked={wishlist.includes(product.id)} onLike={()=>toggleWishlist(product.id)} onOpen={()=>openProduct(product)} index={index}/>;
   const submitOrder=()=>{const order={id:`RTMN-${Date.now().toString(36).toUpperCase()}`,createdAt:new Date().toISOString(),status:"local_preview",items:cart,total};setOrderDrafts(orders=>[order,...orders].slice(0,10));trackEvent("checkout_preview_saved",{orderId:order.id,total});setCheckout(false);setSuccess(order);};
   const updateInventory=(productId,delta)=>setInventory(current=>({...current,[productId]:{quantity:Math.max(0,Math.min(99,(current[productId]?.quantity??0)+delta))}}));
 
@@ -188,7 +211,7 @@ function App(){
       <button className="logo" onClick={()=>{setView("shop");window.scrollTo({top:0,behavior:window.matchMedia?.("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}}>RTMN<span>.</span></button>
       <nav className="desktop-nav">
         <button className={collection==="all"&&category==="All"?"active":""} onClick={()=>setCat("All")}>{t.nav.shop}</button>
-        <button onClick={()=>{setView("shop");setTimeout(()=>scrollTo("collection"),30)}}>{t.nav.collections}</button>
+        <button onClick={()=>{setView("shop");setTimeout(()=>scrollTo("shop-by-category"),30)}}>{t.nav.collections}</button>
         <button className={collection==="new"?"active":""} onClick={setNewDrop}>{t.nav.new}</button>
       </nav>
       <div className="header-actions">
@@ -223,6 +246,13 @@ function App(){
 
       {recentProducts.length>0&&<section className="catalog-section recent-section"><div className="section-head"><div><div className="eyebrow">RTMN / HISTORY</div><h2>{commerceCopy[lang].recentlyViewed}</h2></div></div><div className="product-grid">{recentProducts.map((p,i)=><ProductCard key={p.id} product={p} t={t} liked={wishlist.includes(p.id)} onLike={()=>toggleWishlist(p.id)} onOpen={()=>openProduct(p)} index={i}/>)}</div></section>}
 
+      <CategoryNavigator items={shopCategories} images={brandImages} onSelect={setCat}/>
+      <CampaignFeature campaign={campaigns[0]} images={brandImages} onOpen={()=>openCampaign(campaigns[0].id)}/>
+      <ObjectLaboratory objects={objectStudies} materials={materialStudies} images={brandImages} onOpenProduct={openProductById}/>
+      <PhilosophySection items={philosophy}/>
+      <BrandIndex projects={projects} stories={journalEntries} map={brandMap} images={brandImages} onOpenCampaign={openCampaign} onOpenStory={openJournal} onNavigate={scrollTo}/>
+      <SelectedObjects products={selectedObjects} renderProduct={renderBrandProduct}/>
+      <DropSystem drop={dropSystem} onCurrent={setNewDrop}/>
       <RTMNCollection lang={lang} onExplore={setNewDrop}/>
       <RTMNStory lang={lang}>
         <Value icon="bolt" title="Heavy materials" text="Dense fabrics chosen to hold their shape."/><Value icon="shield" title="Designed in Germany" text="Minimal, functional and made for repeat wear."/>
@@ -235,6 +265,8 @@ function App(){
     {view==="wishlist" && <WishlistView t={t} items={catalogProducts.filter(product=>wishlist.includes(product.id))} onOpen={openProduct} onRemove={toggleWishlist} onShop={()=>setView("shop")}/>}
     {view==="account" && <AccountView t={t} ui={commerceCopy[lang]} profile={profile} setProfile={setProfile} lang={lang} setLang={setLang} onAdmin={()=>setView("admin")} onShop={()=>setView("shop")}/>}
     {view==="admin" && <AdminView t={t} products={catalogProducts} inventory={inventory} updateInventory={updateInventory} onShop={()=>setView("shop")}/>}
+    {view==="campaign" && activeCampaignData && <CampaignPage campaign={activeCampaignData} products={campaignProducts} images={brandImages} renderProduct={renderBrandProduct} onBack={()=>{setView("shop");setTimeout(()=>scrollTo("campaigns"),30)}}/>}
+    {view==="journal" && activeJournalData && <JournalPage story={activeJournalData} products={journalProducts} images={brandImages} renderProduct={renderBrandProduct} onBack={()=>{setView("shop");setTimeout(()=>scrollTo("journal"),30)}}/>}
     {checkout && <CheckoutView t={t} ui={commerceCopy[lang]} cart={cart} subtotal={subtotal} shipping={shipping} total={total} onBack={()=>setCheckout(false)} onSuccess={submitOrder}/>}
     {success && <SuccessView t={t} ui={commerceCopy[lang]} order={success} onBack={()=>{setSuccess(null);setView("cart")}}/>}
 
@@ -263,7 +295,7 @@ function App(){
       onLike={() => toggleWishlist(selected.id)}
       onOpenRelated={openProduct}
     />}
-    {searchOpen && <SearchModal t={t} query={query} setQuery={setQuery} onClose={()=>setSearchOpen(false)} results={searchResults} onOpen={openProduct}/>}
+    {searchOpen && <SearchModal t={t} query={query} setQuery={setQuery} onClose={()=>setSearchOpen(false)} results={searchResults} discoveries={searchDiscoveries} onOpen={openProduct} onCategory={setCat} onCampaign={openCampaign} onStory={openJournal}/>}
     {filterOpen && <FilterDrawer t={t} category={category} setCategory={setCategory} filters={filters} toggleFilter={toggleFilter} setFilters={setFilters} onClose={()=>setFilterOpen(false)} onApply={()=>setFilterOpen(false)}/>}
   </div>
 }
@@ -352,7 +384,20 @@ function AccountView({t,ui,profile,setProfile,lang,setLang,onAdmin,onShop}){cons
 
 function AdminView({t,products,inventory,updateInventory,onShop}){return <main id="main-content" tabIndex={-1} className="page-main admin-page"><div className="page-kicker">RTMN / ADMIN DEMO</div><div className="admin-heading"><div><h1>{t.adminTitle}</h1><p className="mvp-note"><b>{t.localOnly}</b><br/>{t.adminDemoText}</p></div><button className="button button-ghost" onClick={onShop}>{t.continue}</button></div><div className="inventory-table" role="table" aria-label={t.inventory}><div className="inventory-row inventory-head" role="row"><span>{t.product}</span><span>{t.quantity}</span><span>{t.controls}</span></div>{products.map(product=><div className="inventory-row" role="row" key={product.id}><span>{product.name}<small>{product.inStock?t.inStock:t.soldOut}</small></span><b aria-live="polite">{inventory[product.id]?.quantity??0}</b><div><button aria-label={`Decrease ${product.name}`} onClick={()=>updateInventory(product.id,-1)}><Icon name="minus"/></button><button aria-label={`Increase ${product.name}`} onClick={()=>updateInventory(product.id,1)}><Icon name="plus"/></button></div></div>)}</div></main>}
 
-function SearchModal({t,query,setQuery,onClose,results,onOpen}){const dialogRef=useDialogFocus();return <div className="overlay" onMouseDown={onClose}><div ref={dialogRef} className="search-modal" role="dialog" aria-modal="true" aria-label={t.search} onMouseDown={event=>event.stopPropagation()}><div className="search-head"><div className="search-input"><Icon name="search"/><input autoFocus aria-label={t.search} value={query} onChange={e=>setQuery(e.target.value)} placeholder={t.searchPlaceholder}/></div><button aria-label={t.close} onClick={onClose}><Icon name="close"/></button></div><div className="search-results">{results.length?results.map(p=>{const text=productText(p,t.lang);return <button key={p.id} onClick={()=>{onOpen(p);onClose()}}><img className="search-art" src={productImages[p.category] ?? teeStone} alt=""/><div><span>{text.category}</span><b>{p.name}</b></div><strong>{money(p.price)}</strong></button>}):<div className="search-empty">{t.noResults}</div>}</div></div></div>}
+function SearchModal({t,query,setQuery,onClose,results,discoveries,onOpen,onCategory,onCampaign,onStory}){
+  const dialogRef=useDialogFocus();
+  const hasDiscoveries=Object.values(discoveries).some(items=>items.length);
+  const closeAfter=action=>()=>{action();onClose();};
+  return <div className="overlay" onMouseDown={onClose}><div ref={dialogRef} className="search-modal" role="dialog" aria-modal="true" aria-label={t.search} onMouseDown={event=>event.stopPropagation()}>
+    <div className="search-head"><div><div className="search-eyebrow">SEARCH RTMN</div><div className="search-input"><Icon name="search"/><input autoFocus aria-label={t.search} value={query} onChange={e=>setQuery(e.target.value)} placeholder={t.searchPlaceholder}/></div></div><button aria-label={t.close} onClick={onClose}><Icon name="close"/></button></div>
+    {hasDiscoveries&&<div className="search-discoveries">
+      {discoveries.categories.length>0&&<section><span>CATEGORIES</span>{discoveries.categories.map(item=><button key={item.id} onClick={closeAfter(()=>onCategory(item.id))}>{item.label}<Icon name="arrow" size={14}/></button>)}</section>}
+      {discoveries.projects.length>0&&<section><span>PROJECTS</span>{discoveries.projects.map(item=><button key={item.id} onClick={closeAfter(()=>onCampaign(item.id))}>{item.type} / {item.title}<Icon name="arrow" size={14}/></button>)}</section>}
+      {discoveries.stories.length>0&&<section><span>STORIES</span>{discoveries.stories.map(item=><button key={item.id} onClick={closeAfter(()=>onStory(item.id))}>{item.eyebrow}<Icon name="arrow" size={14}/></button>)}</section>}
+    </div>}
+    <div className="search-results">{results.length?results.map(p=>{const text=productText(p,t.lang);return <button key={p.id} onClick={closeAfter(()=>onOpen(p))}><img className="search-art" src={productImages[p.category] ?? teeStone} alt=""/><div><span>{text.category}</span><b>{p.name}</b></div><strong>{money(p.price)}</strong></button>}):<div className="search-empty">{t.noResults}</div>}</div>
+  </div></div>
+}
 function FilterDrawer({t,category,setCategory,filters,toggleFilter,setFilters,onClose,onApply}){
   const dialogRef=useDialogFocus();
   const prices=[['all',t.allPrices],['under50',t.under50],['50to100',t.between50And100],['over100',t.over100]];

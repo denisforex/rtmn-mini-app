@@ -5,19 +5,19 @@ import otherSideWorld from "../assets/rtmn-world-other-side-v3.png";
 
 const copy = {
   en: {
-    heroStatement: "Clothing for the pressure between the known and the next.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
+    heroStatement: "A visual system in motion.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
     collectionEyebrow: "02 / COLLECTION", collectionTitle: "DROP 001", collectionBody: "A uniform for the distance between structure and instinct.", collectionCta: "View collection",
     storyTitle: "RAW TRUE\nMODERN NEW", storyCta: "Our story",
     otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "Enter the other side",
   },
   de: {
-    heroStatement: "Clothing for the pressure between the known and the next.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
+    heroStatement: "A visual system in motion.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
     collectionEyebrow: "02 / COLLECTION", collectionTitle: "DROP 001", collectionBody: "A uniform for the distance between structure and instinct.", collectionCta: "View collection",
     storyTitle: "RAW TRUE\nMODERN NEW", storyCta: "Our story",
     otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "Enter the other side",
   },
   uk: {
-    heroStatement: "Clothing for the pressure between the known and the next.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
+    heroStatement: "A visual system in motion.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
     collectionEyebrow: "02 / COLLECTION", collectionTitle: "DROP 001", collectionBody: "A uniform for the distance between structure and instinct.", collectionCta: "View collection",
     storyTitle: "RAW TRUE\nMODERN NEW", storyCta: "Our story",
     otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "Enter the other side",

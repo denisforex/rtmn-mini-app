@@ -35,21 +35,31 @@ describe("RTMN baseline", () => {
   it("renders six products and filters by category", async () => {
     const user = userEvent.setup();
     const { container } = mount();
-    expect(container.querySelectorAll("article")).toHaveLength(6);
+    expect(container.querySelectorAll("#catalog article")).toHaveLength(6);
     await user.click(within(container.querySelector(".category-tabs")).getByRole("button", { name: "Hoodies" }));
-    expect(container.querySelectorAll("article")).toHaveLength(1);
+    expect(container.querySelectorAll("#catalog article")).toHaveLength(1);
     expect(card("Heavyweight Hoodie")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "All", exact: true }));
-    expect(container.querySelectorAll("article")).toHaveLength(6);
+    expect(container.querySelectorAll("#catalog article")).toHaveLength(6);
   });
 
   it("opens a real New drop scope instead of routing to the full catalog", async () => {
     const user = userEvent.setup();
     const { container } = mount();
     await user.click(within(container.querySelector(".desktop-nav")).getByRole("button", { name: "New drop" }));
-    expect(container.querySelectorAll("article")).toHaveLength(2);
+    expect(container.querySelectorAll("#catalog article")).toHaveLength(2);
     expect(card("Oversized Tee")).toBeInTheDocument();
     expect(card("Zip Overshirt")).toBeInTheDocument();
+  });
+
+  it("opens campaign and journal records as real brand pages", async () => {
+    const user = userEvent.setup();
+    mount();
+    await user.click(screen.getByRole("button", { name: "EXPLORE CAMPAIGN" }));
+    expect(screen.getByRole("heading", { name: /DROP 001 SURFACE STUDY/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "← BACK TO RTMN" }));
+    await user.click(screen.getByRole("button", { name: /MATERIAL NOTE 01/i }));
+    expect(screen.getByRole("heading", { name: /480 GSM BRUSHED COTTON/i })).toBeInTheDocument();
   });
 
   it("searches the catalog and displays an empty result", async () => {
@@ -82,13 +92,13 @@ describe("RTMN baseline", () => {
     await user.click(within(drawer).getByRole("button", { name: "S", exact: true }));
     await user.click(within(drawer).getByRole("button", { name: "Stone" }));
     await user.click(within(drawer).getByRole("button", { name: "Apply filters", exact: true }));
-    expect(container.querySelectorAll("article")).toHaveLength(1);
+    expect(container.querySelectorAll("#catalog article")).toHaveLength(1);
     expect(card("Utility Cargo")).toBeInTheDocument();
     expect(screen.getByText("2", { selector: ".filter-count" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /Refine/ }));
     await user.click(screen.getByRole("button", { name: "Reset", exact: true }));
     await user.click(screen.getByRole("button", { name: "Apply filters", exact: true }));
-    expect(container.querySelectorAll("article")).toHaveLength(6);
+    expect(container.querySelectorAll("#catalog article")).toHaveLength(6);
   });
 
   it.each([["DE", "de", "New Drop"], ["UA", "uk", "Новий дроп"], ["EN", "en", "New drop"]])(
