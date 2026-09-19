@@ -19,6 +19,19 @@ export const campaigns = [
   },
 ];
 
+// Collections are separate from campaigns: a collection is the available
+// product grouping, while a campaign is its visual record.
+export const collections = [
+  {
+    id: "drop-001",
+    eyebrow: "CURRENT COLLECTION",
+    title: "DROP 001",
+    note: "The first six RTMN objects, available in the current drop.",
+    campaignId: "campaign-01",
+    productIds: [1, 2, 3, 4, 5, 6],
+  },
+];
+
 export const objectStudies = [
   { productId: 2, object: "OBJECT 002", title: "HEAVYWEIGHT HOODIE", note: "480 GSM brushed cotton. Relaxed fit." },
   { productId: 5, object: "OBJECT 005", title: "ZIP OVERSHIRT", note: "Cotton nylon blend. Boxy silhouette." },

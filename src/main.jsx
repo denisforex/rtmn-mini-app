@@ -14,7 +14,7 @@ import teeStone from "./assets/optimized/rtmn-tee-stone.webp";
 import utilityWood from "./assets/optimized/rtmn-utility-wood.webp";
 import { RTMNJourney, RTMNHero, RTMNCollection, RTMNStory, RTMNOtherSide } from "./components/RTMNWorld";
 import { BrandIndex, CampaignFeature, CampaignPage, CategoryNavigator, DropSystem, JournalPage, ObjectLaboratory, PhilosophySection, SelectedObjects } from "./components/BrandEcosystem";
-import { brandMap, campaigns, dropSystem, journalEntries, materialStudies, objectStudies, philosophy, projects, shopCategories } from "./data/brandContent";
+import { brandMap, campaigns, collections, dropSystem, journalEntries, materialStudies, objectStudies, philosophy, projects, shopCategories } from "./data/brandContent";
 import campaignEditorial from "./assets/optimized/rtmn-hero-editorial.webp";
 import materialStudy from "./assets/optimized/rtmn-material-study.webp";
 
@@ -184,7 +184,7 @@ function App(){
   const searchDiscoveries=useMemo(()=>{
     const needle=query.trim().toLowerCase();
     const matches=item=>!needle||[item.label,item.title,item.note,item.type,item.summary,item.eyebrow].filter(Boolean).join(" ").toLowerCase().includes(needle);
-    return {categories:shopCategories.filter(matches),projects:projects.filter(matches),stories:journalEntries.filter(matches)};
+    return {categories:shopCategories.filter(matches),collections:collections.filter(matches),projects:projects.filter(matches),stories:journalEntries.filter(matches)};
   },[query]);
 
   const scrollTo=(id)=>{document.getElementById(id)?.scrollIntoView({behavior:window.matchMedia?.("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});setMenuOpen(false)};
@@ -392,6 +392,7 @@ function SearchModal({t,query,setQuery,onClose,results,discoveries,onOpen,onCate
     <div className="search-head"><div><div className="search-eyebrow">SEARCH RTMN</div><div className="search-input"><Icon name="search"/><input autoFocus aria-label={t.search} value={query} onChange={e=>setQuery(e.target.value)} placeholder={t.searchPlaceholder}/></div></div><button aria-label={t.close} onClick={onClose}><Icon name="close"/></button></div>
     {hasDiscoveries&&<div className="search-discoveries">
       {discoveries.categories.length>0&&<section><span>CATEGORIES</span>{discoveries.categories.map(item=><button key={item.id} onClick={closeAfter(()=>onCategory(item.id))}>{item.label}<Icon name="arrow" size={14}/></button>)}</section>}
+      {discoveries.collections.length>0&&<section><span>COLLECTIONS</span>{discoveries.collections.map(item=><button key={item.id} onClick={closeAfter(()=>onCampaign(item.campaignId))}>{item.title}<Icon name="arrow" size={14}/></button>)}</section>}
       {discoveries.projects.length>0&&<section><span>PROJECTS</span>{discoveries.projects.map(item=><button key={item.id} onClick={closeAfter(()=>onCampaign(item.id))}>{item.type} / {item.title}<Icon name="arrow" size={14}/></button>)}</section>}
       {discoveries.stories.length>0&&<section><span>STORIES</span>{discoveries.stories.map(item=><button key={item.id} onClick={closeAfter(()=>onStory(item.id))}>{item.eyebrow}<Icon name="arrow" size={14}/></button>)}</section>}
     </div>}
