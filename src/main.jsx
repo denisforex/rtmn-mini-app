@@ -137,7 +137,8 @@ function App(){
   const shipping=subtotal===0||subtotal>=100?0:4.99;
   const total=subtotal+shipping;
 
-  useEffect(()=>{try{localStorage.setItem("rtmn-lang",lang)}catch{}document.documentElement.lang=lang;const pageTitle=selected?`RTMN — ${selected.name}`:`RTMN — ${lang==='uk'?'Сучасні essentials':lang==='de'?'Moderne Essentials':'Modern Essentials'}`;const description=selected?productText(selected,lang).description:"RTMN — modern streetwear essentials designed in Germany.";document.title=pageTitle;setMeta("description",description);setMeta("og:title",pageTitle,true);setMeta("og:description",description,true)},[lang,selected]);
+  useEffect(()=>{try{localStorage.setItem("rtmn-lang",lang)}catch{}document.documentElement.lang=lang;const pageTitle=selected?`RTMN Shop — ${selected.name}`:`RTMN Shop — ${lang==='uk'?'Сучасні essentials':lang==='de'?'Moderne Essentials':'Modern Essentials'}`;const description=selected?productText(selected,lang).description:"RTMN — modern streetwear essentials designed in Germany.";document.title=pageTitle;setMeta("description",description);setMeta("og:title",pageTitle,true);setMeta("og:description",description,true)},[lang,selected]);
+  useEffect(()=>{window.scrollTo({top:0,behavior:"auto"})},[view]);
   useEffect(()=>{document.documentElement.dataset.theme=theme;writeTheme(theme);setMeta("theme-color","#101211");initializeTelegram("dark")},[theme]);
   useEffect(()=>{writeStoredArray("rtmn-wishlist",wishlist)},[wishlist]);
   useEffect(()=>{writeStoredArray("rtmn-cart",cart)},[cart]);

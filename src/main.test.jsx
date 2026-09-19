@@ -118,7 +118,7 @@ describe("RTMN baseline", () => {
     const user = userEvent.setup();
     mount();
     await user.click(within(card("Oversized Tee")).getByRole("button", { name: "View product" }));
-    expect(document.title).toBe("RTMN — Oversized Tee");
+    expect(document.title).toBe("RTMN Shop — Oversized Tee");
     expect(document.querySelector("meta[name='description']")).toHaveAttribute("content", expect.stringContaining("structured oversized tee"));
   });
 
@@ -139,6 +139,21 @@ describe("RTMN baseline", () => {
     expect(within(mobileNav).getByRole("button", { name: "Wishlist" })).toBeInTheDocument();
     expect(within(mobileNav).getByRole("button", { name: "Bag" })).toBeInTheDocument();
     expect(within(mobileNav).getByRole("button", { name: "Account" })).toBeInTheDocument();
+  });
+
+  it("opens account, wishlist, and the shop back action from the page top", async () => {
+    const user = userEvent.setup();
+    mount();
+    window.scrollTo.mockClear();
+
+    await user.click(document.querySelector(".account-action"));
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 0, behavior: "auto" });
+
+    await user.click(document.querySelector(".wishlist-action"));
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 0, behavior: "auto" });
+
+    await user.click(screen.getByRole("button", { name: "Continue shopping" }));
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 0, behavior: "auto" });
   });
 
   it("persists cart variants, updates totals, and removes a line", async () => {

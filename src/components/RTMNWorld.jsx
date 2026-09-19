@@ -5,19 +5,19 @@ import otherSideWorld from "../assets/rtmn-world-other-side-v3.png";
 
 const copy = {
   en: {
-    heroEyebrow: "DROP 001 / AUTUMN — WINTER 2026", heroStatement: "Clothing for the pressure between the known and the next.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
+    heroStatement: "Clothing for the pressure between the known and the next.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
     collectionEyebrow: "02 / COLLECTION", collectionTitle: "DROP 001", collectionBody: "A uniform for the distance between structure and instinct.", collectionCta: "View collection",
     storyTitle: "RAW TRUE\nMODERN NEW", storyCta: "Our story",
     otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "Enter the other side",
   },
   de: {
-    heroEyebrow: "DROP 001 / AUTUMN — WINTER 2026", heroStatement: "Clothing for the pressure between the known and the next.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
+    heroStatement: "Clothing for the pressure between the known and the next.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
     collectionEyebrow: "02 / COLLECTION", collectionTitle: "DROP 001", collectionBody: "A uniform for the distance between structure and instinct.", collectionCta: "View collection",
     storyTitle: "RAW TRUE\nMODERN NEW", storyCta: "Our story",
     otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "Enter the other side",
   },
   uk: {
-    heroEyebrow: "DROP 001 / AUTUMN — WINTER 2026", heroStatement: "Clothing for the pressure between the known and the next.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
+    heroStatement: "Clothing for the pressure between the known and the next.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
     collectionEyebrow: "02 / COLLECTION", collectionTitle: "DROP 001", collectionBody: "A uniform for the distance between structure and instinct.", collectionCta: "View collection",
     storyTitle: "RAW TRUE\nMODERN NEW", storyCta: "Our story",
     otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "Enter the other side",
@@ -92,14 +92,12 @@ export function RTMNHero({ lang = "en", onExplore }) {
   const t = copy[lang] || copy.en;
   return <section className="world-hero" id="surface" data-world-scene="surface">
     <div className="hero-content">
-      <p className="world-kicker">{t.heroEyebrow}</p>
       <h1>RTMN</h1>
       <p className="hero-manifest">RAW <i>/</i> TRUE <i>/</i> MODERN <i>/</i> NEW</p>
       <p className="hero-statement">{t.heroStatement}</p>
       <button className="world-button world-button-primary" onClick={onExplore}><span>{t.explore}</span><Icon name="arrow" size={15} /></button>
     </div>
     <p className="hero-note">{t.heroNote}</p>
-    <p className="hero-scroll" aria-hidden="true"><span />SCROLL TO DESCEND</p>
   </section>;
 }
 
