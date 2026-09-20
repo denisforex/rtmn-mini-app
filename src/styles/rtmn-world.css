@@ -212,9 +212,10 @@ body { color: var(--text); }
 .footer-manifest { margin: 1.25rem 0 0 !important; color: #adb3ae !important; font-size: clamp(.48rem, .65vw, .63rem) !important; font-weight: 750; letter-spacing: .26em; text-transform: uppercase; }
 .footer-manifest i { padding: 0 .5em; color: #636a65; font-style: normal; }
 .footer-links { gap: clamp(1.15rem, 3.8vw, 3.25rem); }
-.footer-links > div { min-width: clamp(5rem, 8vw, 7.5rem); }
+.footer-links > * { min-width: clamp(5rem, 8vw, 7.5rem); }
 .footer-links h4 { color: #777e79; font-size: .5rem; letter-spacing: .14em; }
-.footer-links span { color: #aeb4af; font-size: .68rem; }
+.footer-links span, .footer-links button { display: block; margin: .48rem 0; padding: 0; color: #aeb4af; font-size: .68rem; text-align: left; }
+.footer-links button:hover, .footer-links button:focus-visible { color: #f0f2ed; }
 .footer-bottom { margin-top: clamp(2.4rem, 6vh, 4.5rem); color: #7a817c; }
 
 @media (max-width: 900px) {

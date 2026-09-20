@@ -149,6 +149,7 @@ function App(){
   const [success,setSuccess]=useState(null);
   const [activeCampaign,setActiveCampaign]=useState(campaigns[0]?.id ?? null);
   const [activeJournal,setActiveJournal]=useState(null);
+  const [infoTab,setInfoTab]=useState("shipping");
 
   const t={...copy[lang],lang};
   const home=homeCopy[lang];
@@ -190,6 +191,7 @@ function App(){
   const scrollTo=(id)=>{document.getElementById(id)?.scrollIntoView({behavior:window.matchMedia?.("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});setMenuOpen(false)};
   const openSearch=()=>{setQuery("");setSearchOpen(true)};
   const closeSearch=()=>{setQuery("");setSearchOpen(false)};
+  const openInfo=(id)=>{setInfoTab(id);setView("shop");setTimeout(()=>scrollTo("details"),30)};
   const setCat=(c)=>{setCollection("all");setCategory(c);trackEvent("catalog_category_selected",{category:c});setView("shop");setTimeout(()=>scrollTo("catalog"),30)};
   const setNewDrop=()=>{setCollection("new");setCategory("All");trackEvent("catalog_collection_selected",{collection:"new"});setView("shop");setTimeout(()=>scrollTo("catalog"),30)};
   const toggleFilter=(field,value)=>setFilters(current=>({...current,[field]:current[field].includes(value)?current[field].filter(item=>item!==value):[...current[field],value]}));
@@ -259,7 +261,7 @@ function App(){
       <RTMNStory lang={lang}>
         <Value icon="bolt" title="Heavy materials" text="Dense fabrics chosen to hold their shape."/><Value icon="shield" title="Designed in Germany" text="Minimal, functional and made for repeat wear."/>
       </RTMNStory>
-      <InfoPanel t={t} home={home} />
+      <InfoPanel t={t} home={home} active={infoTab} setActive={setInfoTab} />
       <RTMNOtherSide lang={lang} onExplore={()=>setCat("All")} onReturn={()=>scrollTo("surface")}/>
     </RTMNJourney>}
 
@@ -272,7 +274,7 @@ function App(){
     {checkout && <CheckoutView t={t} ui={commerceCopy[lang]} cart={cart} subtotal={subtotal} shipping={shipping} total={total} onBack={()=>setCheckout(false)} onSuccess={submitOrder}/>}
     {success && <SuccessView t={t} ui={commerceCopy[lang]} order={success} onBack={()=>{setSuccess(null);setView("cart")}}/>}
 
-    <footer className="footer"><div className="footer-top"><div className="footer-brand"><div className="footer-logo">RTMN<span>.</span></div><p className="footer-manifest">RAW <i>/</i> TRUE <i>/</i> MODERN <i>/</i> NEW</p></div><div className="footer-links"><FooterCol title={t.footerShop} items={[t.nav.shop,t.nav.new,t.nav.tees,t.nav.hoodies,t.nav.pants]}/><FooterCol title={t.footerHelp} items={[t.shippingInfo,t.returns,t.contactUs]}/><FooterCol title={t.footerLegal} items={[t.privacy,t.imprint]}/></div></div><div className="footer-bottom"><span>{t.footerNote}</span><span>DE / EN / UA</span></div></footer>
+    <footer className="footer"><div className="footer-top"><div className="footer-brand"><div className="footer-logo">RTMN<span>.</span></div><p className="footer-manifest">RAW <i>/</i> TRUE <i>/</i> MODERN <i>/</i> NEW</p></div><div className="footer-links"><FooterCol title={t.footerShop} items={[{label:t.nav.shop,onClick:()=>setCat("All")},{label:t.nav.new,onClick:setNewDrop},{label:t.nav.tees,onClick:()=>setCat("T-Shirts")},{label:t.nav.hoodies,onClick:()=>setCat("Hoodies")},{label:t.nav.pants,onClick:()=>setCat("Pants")}]}/><FooterCol title={t.footerHelp} items={[{label:t.shippingInfo,onClick:()=>openInfo("shipping")},{label:t.returns,onClick:()=>openInfo("returns")},{label:t.contactUs,onClick:()=>openInfo("contact")}]}/><FooterCol title={t.footerLegal} items={[{label:t.privacy},{label:t.imprint}]}/></div></div><div className="footer-bottom"><span>{t.footerNote}</span><span>DE / EN / UA</span></div></footer>
 
     <nav className="mobile-bottom-nav" aria-label={t.menu}>
       <button className={view==="shop"?"active":""} onClick={()=>{setView("shop");window.scrollTo({top:0,behavior:window.matchMedia?.("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}}><Icon name="home"/>{t.nav.home}</button>
@@ -418,8 +420,7 @@ function FilterDrawer({t,category,setCategory,filters,toggleFilter,setFilters,on
     </aside>
   </div>
 }
-function InfoPanel({t,home}){
-  const [active,setActive]=useState("shipping");
+function InfoPanel({t,home,active,setActive}){
   const items=[
     {id:"shipping",label:t.shippingInfo,text:home.shippingText},
     {id:"returns",label:t.returns,text:home.returnsText},
@@ -429,6 +430,6 @@ function InfoPanel({t,home}){
   return <section className="faq-strip" id="details"><div><div className="eyebrow">RTMN / DETAILS</div><h3>{home.detailsTitle}</h3></div><div className="info-menu"><div className="info-menu-list" role="tablist" aria-label={home.detailsTitle}>{items.map(item=><button key={item.id} id={"details-tab-"+item.id} className={current.id===item.id?"active":""} role="tab" aria-selected={current.id===item.id} aria-controls={"details-panel-"+item.id} onMouseEnter={()=>setActive(item.id)} onFocus={()=>setActive(item.id)} onClick={()=>setActive(item.id)}><span>{item.label}</span><Icon name="arrow" size={15}/></button>)}</div><div className="info-panel" id={"details-panel-"+current.id} role="tabpanel" aria-labelledby={"details-tab-"+current.id}><span>RTMN / {current.id.toUpperCase()}</span><p>{current.text}</p></div></div></section>
 }
 function Value({icon,title,text}){return <div className="value-card"><div className="value-icon"><Icon name={icon}/></div><h3>{title}</h3><p>{text}</p></div>}
-function FooterCol({title,items}){return <div><h4>{title}</h4>{items.map(i=><span key={i}>{i}</span>)}</div>}
+function FooterCol({title,items}){return <nav aria-label={title}><h4>{title}</h4>{items.map(item=>item.onClick?<button type="button" key={item.label} onClick={item.onClick}>{item.label}</button>:<span key={item.label}>{item.label}</span>)}</nav>}
 
 createRoot(document.getElementById("root")).render(<ErrorBoundary><App/></ErrorBoundary>);

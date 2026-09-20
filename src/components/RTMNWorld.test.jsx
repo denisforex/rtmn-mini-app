@@ -56,7 +56,7 @@ describe("RTMN continuous world", () => {
     const explore = vi.fn();
     render(<RTMNOtherSide lang="uk" onExplore={explore} />);
     expect(screen.getByRole("heading", { name: "THE OTHER SIDE OF RTMN" })).toBeVisible();
-    await user.click(screen.getByRole("button", { name: "Enter the other side" }));
+    await user.click(screen.getByRole("button", { name: "View current objects" }));
     expect(explore).toHaveBeenCalledOnce();
   });
 });

@@ -86,6 +86,18 @@ describe("RTMN baseline", () => {
     expect(panel).toHaveAttribute("aria-labelledby", "philosophy-tab-true");
   });
 
+  it("uses footer navigation to return to commerce and support details", async () => {
+    const user = userEvent.setup();
+    const { container } = mount();
+    const shopFooter = screen.getByRole("navigation", { name: "Shop" });
+    await user.click(within(shopFooter).getByRole("button", { name: "Hoodies" }));
+    expect(container.querySelectorAll("#catalog article")).toHaveLength(1);
+
+    const helpFooter = screen.getByRole("navigation", { name: "Help" });
+    await user.click(within(helpFooter).getByRole("button", { name: "Returns" }));
+    expect(document.querySelector("#details-panel-returns")).toHaveTextContent("return policy");
+  });
+
   it("sorts prices in both directions", async () => {
     const user = userEvent.setup();
     const { container } = mount();

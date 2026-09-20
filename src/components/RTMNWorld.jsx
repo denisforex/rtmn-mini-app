@@ -8,19 +8,19 @@ const copy = {
     heroStatement: "A visual system in motion.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
     collectionEyebrow: "02 / COLLECTION", collectionTitle: "DROP 001", collectionBody: "A uniform for the distance between structure and instinct.", collectionCta: "View collection",
     storyTitle: "RAW TRUE\nMODERN NEW", storyCta: "Our story",
-    otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "Enter the other side",
+    otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "View current objects",
   },
   de: {
     heroStatement: "A visual system in motion.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
     collectionEyebrow: "02 / COLLECTION", collectionTitle: "DROP 001", collectionBody: "A uniform for the distance between structure and instinct.", collectionCta: "View collection",
     storyTitle: "RAW TRUE\nMODERN NEW", storyCta: "Our story",
-    otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "Enter the other side",
+    otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "View current objects",
   },
   uk: {
     heroStatement: "A visual system in motion.", explore: "Explore collection", heroNote: "The surface is only the beginning.",
     collectionEyebrow: "02 / COLLECTION", collectionTitle: "DROP 001", collectionBody: "A uniform for the distance between structure and instinct.", collectionCta: "View collection",
     storyTitle: "RAW TRUE\nMODERN NEW", storyCta: "Our story",
-    otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "Enter the other side",
+    otherTitle: "THE OTHER SIDE\nOF RTMN", otherBody: "Same world. Different direction.", otherCta: "View current objects",
   },
 };
 
